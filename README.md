@@ -1,3 +1,15 @@
+**Framework Used by Mantine**
+
+Mantine is a **React component library**, so it is built on top of **React.js**.  
+
+- **Language:** JavaScript / TypeScript  
+- **UI Framework:** React  
+- **Styling:** CSS-in-JS with support for Tailwind classes  
+- **State & Hooks:** Built with React hooks (`useState`, `useEffect`, etc.)  
+- **Theming:** Mantine provides a powerful theming system for colors, spacing, fonts, and dark/light modes.
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
