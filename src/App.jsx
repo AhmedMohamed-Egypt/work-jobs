@@ -1,13 +1,17 @@
 
 import LoginPage from './Pages/LoginPage.jsx'
+import { EmailPasswordProvider } from './context/EmailPasswordContext.jsx'
 
 function App() {
 
 
   return (
-    <>
-     <LoginPage/>
-    </>
+ 
+    <EmailPasswordProvider>
+<LoginPage/>
+    </EmailPasswordProvider>
+     
+ 
   )
 }
 

@@ -3,7 +3,8 @@ import { IconInfoCircle } from "@tabler/icons-react";
 import { Center, PasswordInput, Text, TextInput, Tooltip } from "@mantine/core";
 import styles from "./inputEmailPassword.module.scss";
 
-function TooltipIcon() {
+function TooltipIcon({email,onChangeEmail,errorEmail}) {
+  
   const rightSection = (
     <Tooltip
       label="We store your data securely"
@@ -21,19 +22,22 @@ function TooltipIcon() {
 
   return (
     <TextInput
-      rightSection={rightSection}
+      rightSection={ rightSection}
       placeholder="Email"
       classNames={{
         input: "!py-[10px] !h-auto !border-black42 !placeholder-font-roboto !placeholder-black"
       }}
+      value={email}
+      onChange={onChangeEmail}
+       error={errorEmail}
     />
   );
 }
 
-function TooltipFocus() {
+function TooltipFocus({pass,onChangePass}) {
   const [opened, setOpened] = useState(false);
-  const [value, setValue] = useState("");
-  const valid = value.trim().length >= 6;
+ 
+  const valid =  pass?.trim().length >= 6;
 
   return (
     <Tooltip
@@ -57,18 +61,18 @@ function TooltipFocus() {
         onFocus={() => setOpened(true)}
         onBlur={() => setOpened(false)}
         mt="md"
-        value={value}
-        onChange={(event) => setValue(event.currentTarget.value)}
+        value={pass}
+        onChange={onChangePass}
       />
     </Tooltip>
   );
 }
 
-export function InputTooltip() {
+export function InputTooltip({email,onChangeEmail,errorEmail,pass,onChangePass}) {
   return (
     <>
-      <TooltipIcon />
-      <TooltipFocus />
-    </>
+      <TooltipIcon errorEmail={errorEmail} email={email} onChangeEmail={onChangeEmail}  />
+      <TooltipFocus pass={pass} onChangePass={onChangePass} />
+    </> 
   );
 }
