@@ -25,29 +25,31 @@ function TooltipIcon({email,onChangeEmail,errorEmail}) {
       rightSection={ rightSection}
       placeholder="Email"
       classNames={{
-        input: "!py-[10px] !h-auto !border-black42 !placeholder-font-roboto !placeholder-black"
+        input: `!py-[10px] !h-auto ${errorEmail?'':'!border-black42'} !placeholder-font-roboto !placeholder-black`
       }}
       value={email}
       onChange={onChangeEmail}
-       error={errorEmail}
+      error={`${errorEmail}`}
+      
     />
   );
 }
 
-function TooltipFocus({pass,onChangePass}) {
+function TooltipFocus({pass,onChangePass,errorPass}) {
   const [opened, setOpened] = useState(false);
- 
-  const valid =  pass?.trim().length >= 6;
-
+    const validatePassword = (value) => {
+    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/~`]).{8,}$/;
+    return regex.test(value);
+  };
   return (
     <Tooltip
       label={
-        valid ? "All good!" : "Password must include at least 6 characters"
+        validatePassword(pass) ? "All good!" : "Password must include at least 6 characters"
       }
       position="bottom-start"
       withArrow
       opened={opened}
-      color={valid ? "teal" : undefined}
+      color={validatePassword(pass) ? "teal" : undefined}
       withinPortal
     >
       <PasswordInput
@@ -55,7 +57,7 @@ function TooltipFocus({pass,onChangePass}) {
         required
         placeholder="Your password"
           classNames={{
-          input: `${styles.inputpassword} !py-[27.5px] !h-auto !min-h-auto !border-black42 passwordParent`,
+          input: `${styles.inputpassword} !py-[27.5px] !h-auto !min-h-auto ${errorPass?'':'!border-black42'} passwordParent`,
         
         }}
         onFocus={() => setOpened(true)}
@@ -63,16 +65,17 @@ function TooltipFocus({pass,onChangePass}) {
         mt="md"
         value={pass}
         onChange={onChangePass}
+        error={errorPass}
       />
     </Tooltip>
   );
 }
 
-export function InputTooltip({email,onChangeEmail,errorEmail,pass,onChangePass}) {
+export function InputTooltip({email,onChangeEmail,errorEmail,pass,onChangePass,errorPass}) {
   return (
     <>
       <TooltipIcon errorEmail={errorEmail} email={email} onChangeEmail={onChangeEmail}  />
-      <TooltipFocus pass={pass} onChangePass={onChangePass} />
+      <TooltipFocus pass={pass} onChangePass={onChangePass} errorPass={errorPass} />
     </> 
   );
 }

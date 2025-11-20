@@ -4,13 +4,15 @@ import { createContext, useContext, useReducer } from "react";
 
 const EmailPasswordContext = createContext()
 
-const initialState = {}
+const initialState = {
+   credintials:{}
+}
 
 function reducer(snState,action){
     switch(action.type){
         case 'getData':{
-            console.log(action.payload)
-       return {...snState}
+            
+       return {...snState,credintials:{email:action.payload.email,password:action.payload.password}}
         }
         default:{
             throw new Error('Action not known')
@@ -19,11 +21,11 @@ function reducer(snState,action){
 }
 
 function EmailPasswordProvider({children}){
-    const [{},dispatch] = useReducer(reducer,initialState)
+    const [{credintials},dispatch] = useReducer(reducer,initialState)
     function getvals(value){
     dispatch({type:'getData',payload:value})
 }
-    return <EmailPasswordContext.Provider value={{getvals}}>{children}</EmailPasswordContext.Provider>
+    return <EmailPasswordContext.Provider value={{getvals,credintials}}>{children}</EmailPasswordContext.Provider>
 }
 
 
