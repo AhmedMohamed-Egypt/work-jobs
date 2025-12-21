@@ -4,7 +4,7 @@ import styles from './searchInput.module.css'
 
 function Header() {
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pb-9">
             <div className="flex items-center">
                 <div className="mr-[50px] font-inter w-[50px] h-[50px] font-bold text-base bg-black rounded-full text-white flex items-center justify-center">
                 HW

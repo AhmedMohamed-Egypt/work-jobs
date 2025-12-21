@@ -2,11 +2,17 @@
 @import "tailwindcss";
 @theme {
     --bg-black: #000;
+    --color-tailblack:#212B36;
     --color-grey50:#F8FAFC;
     --color-black42: #0000006B;
+    --color-black60:#00000099;
     --color-tailgrid:#637381;
+    --color-grey50:#E0DFDC;
     --color-grey100: #E7E7E7;
     --color-grey200: #CCC;
+    --color-grey250:#F6F6F6;
+    --color-grey300:#8F8F8F;
+    --color-green:#42A54B;
     --bg-grey100:#E7E7E7;
     --font-manpore:'Manrope','sans-serif';
     --font-roboto:"Roboto", sans-serif;
@@ -18,4 +24,5 @@
     --text-xss:14px;
     --text-xs:15px;
     --text-xs1:16px;
+    --text-xl:25px;
 }

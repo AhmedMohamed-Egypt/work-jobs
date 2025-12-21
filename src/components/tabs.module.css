@@ -1,3 +1,6 @@
 .tabs >div:not(:last-child){
-    padding-right:35px;
+    padding-right:48px;
+}
+.tabs >div p,.tabs >div h3 {
+    margin-top:5px;
 }
