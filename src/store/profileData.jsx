@@ -1,9 +1,7 @@
 import { act } from "react";
 
 const initialState = {
-  name: "",
-  jobTitle: "",
-  imgLink: null,
+  profileData:{},
   uploading: null,
   errorUpload: null,
 };
@@ -13,23 +11,20 @@ export default function profileDataReducer(state = initialState, action) {
      
       return { ...state, uploading: action.payload };
     }
-    case "setImage": {  
+    case 'fetchProfileData':{
 
-      const profName = action.payload.name
-      const profJobTilte = action.payload.jobTitle
-      const linkImage = action.payload.image.secure_url
-      const error = action.payload.error
-    
-      return { ...state,name:profName,jobTitle:profJobTilte,imgLink:linkImage,errorUpload:error};
+      const data = !action.payload.error ? action.payload.resProfileData:{...state.profileData}
+     
+      return {...state,errorUpload:action.payload.error,profileData:data}
     }
-
+  
     default: {
       return state;
     }
   }
 }
 
-export function getprofileData( data,fileObject, presetName) {
+export function postImageLink(name,job, fileObject, presetName) {
   return async (dispatch, getState) => {
    
     try {
@@ -37,6 +32,7 @@ export function getprofileData( data,fileObject, presetName) {
         type: "startUpload",
         payload: true,
       });
+     
       const formData = new FormData();
       formData.append("file", fileObject);
       formData.append("upload_preset", presetName);
@@ -47,18 +43,38 @@ export function getprofileData( data,fileObject, presetName) {
           body: formData,
         }
       );
+       
       //send erorr to catch 
-      if(!fileObject) throw new Error('No File Selected')
-      if(!res.ok) throw new Error ('Something Wrong')
+      
+      if(!res.ok) throw new Error ('Image upload failed')
       const dataImage = await res.json();
-      dispatch({ type: "setImage", payload: {...data, image:dataImage,error:false} });
+      const image = dataImage?.secure_url||''
+      
+      //post profile data 
+     const postProfileData =await fetch('https://api.jsonbin.io/v3/b',{
+       "method":"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "X-Master-Key":"$2a$10$eb5fMMQQKy3XfIbmNVHyme7iRC0x6iF6vv7XxuLVMJKiEQaMJ4qBi",
+        },
+       "body":JSON.stringify({name:name,job:job,imgLink:image})
+     })
+     if(!postProfileData.ok) throw new Error('Failed to fetch ')
+     const resData =await postProfileData.json()
+     dispatch({type:'fetchProfileData',payload:{resProfileData:resData?.record,error:false}})
+
     } catch (error) {
-      dispatch({ type: "setImage", payload:{ image:null,error:error.message} });
+      dispatch({ type: "fetchProfileData", payload:{ resProfileData:null,error:error.message} });
     } finally {
      dispatch({
         type: "startUpload",
         payload: false,
       });
+    
     }
   };
 }
+
+
+
+

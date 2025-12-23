@@ -1,10 +1,12 @@
 
 import { FileButton, Button, Group, Text } from "@mantine/core";
+import { useSelector } from "react-redux";
 function UploadImage({ classButton,onChange,file,setFile }) {
+  
  
   return (
     <>
-      <Group>
+      <Group classNames={{root:'!flex !items-center mt-5'}}>
         <FileButton onChange={onChange} setFile={setFile} accept="image/png,image/jpeg">
           {(props) => (
             <Button classNames={classButton} {...props}>
@@ -12,20 +14,22 @@ function UploadImage({ classButton,onChange,file,setFile }) {
             </Button>
           )}
         </FileButton>
-      </Group>
-
+        
       {file && (
         <Text
           classNames={{
-            root: "!text-left !bg-green !p-1 !pl-3 !rounded-[14px] !text-white",
+            root: `!m-0 !text-left !bg-green !p-1 !pl-3 !rounded-[14px] !text-white !px-2 !text-xssss`,
           }}
           size="sm"
           ta="center"
           mt="sm"
         >
-          Picked file: {file.name}
+
+         ${file.name}
         </Text>
       )}
+      </Group>
+
     </>
   );
 }

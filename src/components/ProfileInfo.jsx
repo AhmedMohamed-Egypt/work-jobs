@@ -1,11 +1,12 @@
+import { useSelector } from 'react-redux';
 import profileBkground from '../assets/bkground-contarctor.jpg'
 import profileContractor from '../assets/profile.png'
 import {getProfileData} from '../hooks/FetchProfileData';
 
 function ProfileInfo() {
   const { profileData,lodadingData } = getProfileData()
- 
-  
+  const {profileData:profile} = useSelector((store)=>store.profileData)
+  const imgLink = profile.imgLink
   const {profileViews, postImpressions} =!lodadingData ?  profileData.record.stats : {profileViews:0,postImpressions:0}
   
   
@@ -23,7 +24,7 @@ function ProfileInfo() {
       {/* Profile Section */}
       <div className="font-inter translate-y-[-30px]  flex flex-col items-center p-6 pb-0 -mt-12">
         <img
-          src={`${profileContractor}`}
+          src={`${imgLink||profileContractor}`}
           alt="Profile"
           className="w-28 h-28 rounded-full  object-cover"
         />

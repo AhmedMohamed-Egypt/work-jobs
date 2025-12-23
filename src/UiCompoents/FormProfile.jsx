@@ -10,10 +10,11 @@ import { Button, Group, TextInput ,Text} from "@mantine/core";
 import UploadImage from "./UploadImage";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getprofileData } from "../store/profileData";
+import { postImageLink } from "../store/profileData";
 
 function FormProfile() {
   const [file, setFile] = useState(null);
+ const {errorUpload} = useSelector((store)=>store.profileData)
  
   const dispatch = useDispatch();
 
@@ -30,23 +31,22 @@ function FormProfile() {
       name: hasLength({ min: 2, max: 10 }, "Name must be 2-10 characters long"),
       job: isNotEmpty("Enter your current job"),
       image: (value) => (!value ? "Image is required" : null),
-      
     },
   });
   
   const handleSubmit = () => {
-   
+     
     dispatch(
-      getprofileData({ name: form.values.name, jobTitle: form.values.job },file, "ml_default")
+      postImageLink(form.values.name,form.values.job,file, "ml_default")
     );
   };
   const handleSelectImage=(file)=>{
+   
    if (!file) return;
 
   form.setFieldValue("image", file); // ✅ set virtual field
   form.clearFieldError("image");     // ✅ remove error if exists
   }
- 
  
   
   return (
@@ -72,7 +72,8 @@ function FormProfile() {
       <UploadImage
         onChange={(file)=>{setFile(file),handleSelectImage(file)}}
         file={file}
-        classButton={{ root: "!bg-black mt-5" }}
+       
+        classButton={{ root: "!bg-black" }}
    
       />
       {form.errors.image&&<Text color="red" size="sm">
@@ -80,7 +81,7 @@ function FormProfile() {
   </Text>}
    
 
-      
+         <Text classNames={{root:'!bg-red-500 !text-white !rounded-[15px] !pl-3 !mt-2'}}>{errorUpload}</Text>
       <Group justify="flex-end" mt="md">
         <Button
           type="submit"
@@ -92,7 +93,10 @@ function FormProfile() {
           Submit
         
         </Button>
+       
+     
       </Group>
+     
     </form>
   );
 }

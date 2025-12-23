@@ -10,25 +10,24 @@ import { useSelector } from "react-redux";
 import NotificationsToast from "../UiCompoents/Notifications";
 function ProfileContents() {
   const [open, setOpen] = useState(false);
-  const { name, jobTitle, imgLink, errorUpload, uploading } = useSelector(
+  const { profileData, errorUpload, uploading } = useSelector(
     (store) => store.profileData
   );
+  const {name, job, imgLink}=profileData
   const [visible, setVisible] = useState(false)
   const [notify,setNotify] = useState(false)
    useEffect(() => {
-  setVisible(uploading);
-  setOpen(uploading)
-   setNotify((not)=>uploading==false?!not:not)
-     const timer = setTimeout(() => {
-    setNotify(false);
-  }, 3000);
+     setVisible(uploading);
+     setOpen((op)=>(errorUpload==false&&uploading==false)?!op:op)
+     setNotify((nofy)=>(errorUpload==false&&uploading==false)?!nofy:nofy)
 
-  return () => clearTimeout(timer);
 }, [uploading,errorUpload]);
+  
+
 
   return (
     <div className="w-3xl max-w-full bg-white border border-grey50 rounded-[10px] ">
-     {notify&&<NotificationsToast txt={'Profile Changed Successfully'}/>}
+     {notify&&<NotificationsToast onClose={()=>{setNotify(false)}} txt={'Profile Changed Successfully'}/>}
       <div
         className="h-50 bg-cover bg-position-x-center"
         style={{ backgroundImage: `url(${profileBkGround})` }}
@@ -41,14 +40,14 @@ function ProfileContents() {
           title={"Edit Profile"}
           classes={{ title: "!text-xs1 !font-semibold" }}
         >
-          <FormProfile />
+          <FormProfile error={errorUpload}/>
             <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
            
         </ModalMaintin>
         <div className="w-[90px] h-[90px] rounded-full  ">
           <img
             className=" rounded-full border-6 border-green-500 w-full h-full"
-            src={imgLink?imgLink:profileContractor}
+            src={imgLink||profileContractor}
             alt=""
           />
         </div>
@@ -61,7 +60,7 @@ function ProfileContents() {
           </h2>
         </div>
         <div className="font-roboto font-normal text-xs1 flex items-center">
-          <h4 className="pr-2">{jobTitle||"Contractor"}</h4>
+          <h4 className="pr-2">{job||'Contractor'}</h4>
           <h4
             className="px-2 relative after:absolute after:top-1 after:left-0 after:w-px after:h-[18px] after:bg-black 
                 before:absolute before:top-1 before:right-0 before:w-px before:h-[18px] before:bg-black
