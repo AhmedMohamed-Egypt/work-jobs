@@ -3,6 +3,7 @@ import { Container } from "@mantine/core";
 import { UseEmailPassword } from "../context/EmailPasswordContext";
 import ProfileInfo from "../components/ProfileInfo";
 import ProfileContents from "../components/ProfileContents";
+import Recommendations from "../UiCompoents/Recommendations";
 
 function HomePage() {
   return (
@@ -14,6 +15,7 @@ function HomePage() {
         <div className="container mx-auto pt-4 flex items-start justify-between">
           <ProfileInfo />
           <ProfileContents/>
+          <Recommendations/>
         </div>
       </div>
     </>

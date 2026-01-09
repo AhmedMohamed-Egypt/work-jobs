@@ -39,7 +39,7 @@ function ProfileContents() {
 
 
   return (
-    <div className="w-3xl max-w-full bg-white border border-grey50 rounded-[10px] ">
+    <div className="w-[650px] max-w-full bg-white border border-grey50 rounded-[10px] ">
      {notify&&<NotificationsToast onClose={()=>{setNotify(false)}} txt={'Profile Changed Successfully'}/>}
       <div
         className="h-50 bg-cover bg-position-x-center"
