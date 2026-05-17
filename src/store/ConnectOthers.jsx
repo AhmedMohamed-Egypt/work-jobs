@@ -1,7 +1,11 @@
+import { useState } from "react";
+
 const initialState = {
-  status: null,
+  listPersons: [],
   stLoading: null,
-  srError: null,
+  stError: null,
+  listFailes:[]
+  
 };
 
 export default function connectOthersReducer(state = initialState, action) {
@@ -10,10 +14,29 @@ export default function connectOthersReducer(state = initialState, action) {
       return { ...state, stLoading: true };
     }
     case "CONNECTION_SUCCESS": {
-      return { ...state, status: action.payload,stLoading:false,stError:null };
+      
+      const id = action.payload.id;
+     const exists = state.listPersons.includes(id);
+      return {
+        ...state,
+         listPersons: exists
+      ? state.listPersons
+      : [...state.listPersons, id],
+        stLoading: false,
+      };
     }
     case "CONNECTION_FAILED": {
-      return { ...state, stError: action.payload };
+      
+      const id = action.payload.id
+      const exist = state.listFailes.includes(id)
+      
+      return {
+        ...state,
+        listFailes:exist?state.listFailes:[...state.listFailes,id],
+        stError: action.payload.error,
+        stLoading: false,
+       
+      };
     }
 
     default: {
@@ -22,23 +45,30 @@ export default function connectOthersReducer(state = initialState, action) {
   }
 }
 
-export function fetchConnection() {
-  return async (dispatch) => {
+export function fetchConnection(id) {
+  return async (dispatch,getstate) => {
+  const exist = getstate().connectOthers.listPersons 
+  //const existFailed =getstate().connectOthers.listFailes 
+  if(exist.includes(id)) return ;
     try {
       dispatch({ type: "CONNECTION_STATRT" });
       const res = await fetch(
-        "https://api.jsonbin.io/v3/b/69614107d0ea881f406016a6",
+        "https://api.jsonbin.io/v3/b/696482e043b1c97be92a501b",
         {
           headers: {
             "Content-Type": "application/json",
             "X-Master-Key":
               "$2a$10$eb5fMMQQKy3XfIbmNVHyme7iRC0x6iF6vv7XxuLVMJKiEQaMJ4qBi",
           },
-        }
+        },
       );
       if (!res.ok) throw new Error("Failed to Connect");
       const data = await res.json();
-      dispatch({ type: "CONNECTION_SUCCESS", payload: data });
+
+      dispatch({
+        type: "CONNECTION_SUCCESS",
+        payload: { dataId: data.record, id: id },
+      });
     } catch (error) {
       let errorMessage = "Something went Wrong";
       if (!navigator.onLine) {
@@ -48,7 +78,10 @@ export function fetchConnection() {
       } else {
         errorMessage = "UnExpected Error";
       }
-      dispatch({ type: "CONNECTION_FAILED", payload: errorMessage });
+      dispatch({
+        type: "CONNECTION_FAILED",
+        payload: { error: errorMessage, id: id },
+      });
     }
   };
 }

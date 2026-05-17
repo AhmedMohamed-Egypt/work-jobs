@@ -2,8 +2,7 @@ import MapWithMyLocation from "./MapWithMyLocation";
 import ModalMaintin from "./ModalMaintin";
 import ButtonDefault from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import { clearError, fetchCityLocation, resetCompletion } from "../store/CityOfficeSlice";
-import SpinLoader from "./SpinLoader";
+import { clearError, fetchCityLocation } from "../store/CityOfficeSlice";
 import AlertError from "./Alert";
 import { useEffect, useState } from "react";
 import { LoadingOverlay } from "@mantine/core";
@@ -31,6 +30,7 @@ function MapModal({ openMap, setOpenMap, onClick }) {
   };
   useEffect(()=>{
     if(officeLocation&&!offLocError&&!offLocLoading) setNotify(true)
+    if(completed==null) setCity('')
   },[officeLocation,offLocError,offLocLoading])
 
   

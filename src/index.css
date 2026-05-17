@@ -43,3 +43,6 @@
 .animate-slide-in-left {
     animation: slide-in-left 0.3s ease-out forwards;
   }
+body{
+  overflow-x:hidden;
+}

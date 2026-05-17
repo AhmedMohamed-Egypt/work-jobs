@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { act, use, useEffect, useState } from "react";
 import { IMAGES } from "../constatnts/images";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchConnection } from "../store/ConnectOthers";
+import AlertError from "./Alert";
 const recommendations = [
   {
     id: 1,
@@ -35,15 +36,48 @@ const recommendations = [
     avatar: IMAGES["imgFreeFour"],
   },
 ];
-
-
 export default function Recommendations() {
-    const dispatch = useDispatch();
-  const handleConnect = () => {
-    dispatch(fetchConnection());
+  const { listPersons,listFailes, stLoading, stError } = useSelector(
+    (store) => store.connectOthers,
+  );
+  const [active, setActive] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [btnList, setBtnList] = useState([]);
+  const [text, setText] = useState("Connect");
+  const dispatch = useDispatch();
+  const handleConnect = (id) => {
+    setActive(id);
+    dispatch(fetchConnection(id));
   };
+  const handleConnection = (id) => {
+    if (listPersons.includes(id)) {
+      return "Connected";
+    } else {
+      if (stLoading) return "Connecting";
+      if (stError) return "Retry";
+    }
+  };
+
   return (
     <section className="rounded-xl border border-grey100 bg-white p-5 w-[500px]">
+      <div
+        className={`absolute top-0 right-0 transition-transform duration-500 ease-in-out
+    ${visible ? "translate-x-0" : "translate-x-full"}
+  `}
+      >
+        <AlertError color="red.9">
+          <div className="flex items-center">
+            <p className="pr-2">{stError}</p>
+            <button
+              onClick={() => setVisible(false)}
+              className="cursor-pointer w-6 h-6 flex items-center justify-center rounded-full bg-red-700 text-white hover:bg-red-800 transition"
+            >
+              ✕
+            </button>
+          </div>
+        </AlertError>
+      </div>
+
       {/* Header */}
       <div className="mb-4 flex items-center justify-between w-[90%] mx-auto">
         <h3 className="text-xs1 font-inter font-semibold">Recommendations</h3>
@@ -54,40 +88,42 @@ export default function Recommendations() {
 
       {/* List */}
       <div className="space-y-3 w-[90%] mx-auto">
-        {recommendations.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center justify-between rounded-lg border p-3 border-grey50"
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={`relative h-12 w-12 overflow-hidden rounded-full ${
-                  user.active ? "ring-2 ring-green-500" : ""
-                }`}
-              >
-                <img
-                  src={user.avatar}
-                  alt={user.name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-
-              <div>
-                <p className="font-medium font-inter text-xss">{user.name}</p>
-                <p className="text-xsss font-normal text-grey300">
-                  {user.title}
-                </p>
-              </div>
-            </div>
-
-            <button
-              onClick={handleConnect}
-              className="rounded-full  border-[1.2px] px-4 py-1 cursor-pointer text-xsss font-normal font-inter transition hover:bg-gray-100"
+        {recommendations.map((user, indx) => {
+          return (
+            <div
+              key={user.id}
+              className="flex items-center justify-between rounded-lg border p-3 border-grey50"
             >
-              Connect
-            </button>
-          </div>
-        ))}
+              <div className="flex items-center gap-3">
+                <div
+                  className={`relative h-12 w-12 overflow-hidden rounded-full`}
+                >
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                <div>
+                  <p className="font-medium font-inter text-xss">{user.name}</p>
+                  <p className="text-xsss font-normal text-grey300">
+                    {user.title}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleConnect(user.id)}
+                className={`rounded-full  border-[1.2px] px-4 py-1  text-xsss font-normal font-inter transition cursor-pointer ${listPersons.includes(user.id)?'bg-green-500 text-white':(listFailes.includes(user.id)?'bg-red-500 text-white':'')}`}
+              >
+                {user.id === active
+                  ? handleConnection(user.id)
+                  : listPersons.includes(user.id)?'Connected': (listFailes.includes(user.id)?'Retry':'Connect')}
+              </button>
+            </div>
+          );
+        })}
       </div>
 
       {/* Footer */}
