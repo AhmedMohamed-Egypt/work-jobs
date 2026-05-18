@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import NotificationsToast from "../UiCompoents/Notifications";
 import MapModal from "../UiCompoents/MapModal";
 import { resetCompletion } from "../store/CityOfficeSlice";
+import CreateJobs from '../UiCompoents/CreateJobs'
 function ProfileContents() {
   const [open, setOpen] = useState(false);
   const [openMap,setOpenMap] = useState(false)
@@ -39,6 +40,7 @@ function ProfileContents() {
 
 
   return (
+    <div>
     <div className="w-[650px] max-w-full bg-white border border-grey50 rounded-[10px] ">
      {notify&&<NotificationsToast onClose={()=>{setNotify(false)}} txt={'Profile Changed Successfully'}/>}
       <div
@@ -92,11 +94,6 @@ function ProfileContents() {
             root: "!text-xsss !pl-0 !py-[8px] !px-[10px] !h-auto text-xs1 !bg-transparent !text-petreloum !rounded-[20px] !font-robto !font-smeibold",
           }} text="Select office location"/>
        </div>
-           
-        
-
-
-
         <div className="flex items-center my-5">
           <div className="flex items-center ">
             {Array.from({ length: 3 }).map((_, index) => (
@@ -122,7 +119,10 @@ function ProfileContents() {
         />
       </div>
        <MapModal onClick={()=>setOpenMap(false)} openMap={openMap} />
+       
     </div>
+     <CreateJobs/>
+     </div>
   );
 }
 
