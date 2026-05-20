@@ -1,0 +1,14 @@
+.form :global(.mantine-InputWrapper-root):not(:has(textarea)) {
+  width: 48%;
+}
+.form > div:nth-of-type(n + 7):nth-of-type(-n + 9) {
+  width: 100%;
+}
+.form :global(.mantine-InputWrapper-label){
+    margin-bottom:10px;
+}
+.aiButton {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}

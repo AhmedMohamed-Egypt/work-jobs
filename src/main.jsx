@@ -11,11 +11,11 @@ import { Provider } from "react-redux";
 import store from "./store/store.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <MantineProvider>
         <App />
       </MantineProvider>
     </Provider>
-  </React.StrictMode>
+  </>
 );
