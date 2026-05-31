@@ -16,6 +16,7 @@ import "@mantine/dates/styles.css";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import GreyContainer from "../UiCompoents/GreyContainer";
+import { useJob } from "../context/JobContext";
 const list = [
   { title: "Job Basic", txt: "Add title,categorey and description" },
   { title: "Requirements", txt: "Add skills and experience" },
@@ -24,19 +25,10 @@ const list = [
   { title: "Publish", txt: "Publish or save as draft" },
 ];
 function CreationJobs() {
+   const { jobData, setJobData } = useJob();
   const navigate = useNavigate();
   const form = useForm({
-    initialValues: {
-      title: "",
-      category: "",
-      location: "",
-      description: "",
-      experience: "",
-      salary: "",
-      skills: [],
-      deadline: null,
-      Autocomplete:[]
-    },
+    initialValues:jobData,
 
     validate: {
       title: (value) =>
@@ -44,7 +36,7 @@ function CreationJobs() {
 
       category: (value) => (!value ? "Please select category" : null),
 
-      location: (value) => (value.length < 2 ? "Location is required" : null),
+      
 
       description: (value) =>
         value.length < 30 ? "Description must be at least 30 characters" : null,
@@ -55,7 +47,7 @@ function CreationJobs() {
 
       skills: (value) =>
         value.length < 2 ? "Please add at least 2 skills" : null,
-      Autocomplete: (value) =>
+      Location: (value) =>
         value.length < 1 ? "Please Select Location" : null,
 
       deadline: (value) =>
@@ -63,12 +55,24 @@ function CreationJobs() {
     },
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = (e) => {
+   // e.preventDefault()
+    console.log(form.values);
+    setJobData(form.values);
 
-    navigate("/jobs/create/requirements");
+   // navigate("/jobs/create/requirements");
   };
   const {loading,cities} = useCities()
+
+  const testApi = async () => {
+  const response = await fetch(
+    "http://localhost:5000/test"
+  );
+
+  const data = await response.json();
+
+  console.log(data);
+};
   
   return (
     <>
@@ -162,7 +166,7 @@ function CreationJobs() {
 
                       {/* Location */}
                     
-                      <Autocomplete {...form.getInputProps("Autocomplete")}  radius="xl" data={!loading?cities:''}  label="Location" placeholder="Type your location"/>
+                      <Autocomplete {...form.getInputProps("Location")}  radius="xl" data={!loading?cities:''}  label="Location" placeholder="Type your location"/>
 
                       {/* Experience */}
                       <Select
@@ -224,6 +228,7 @@ function CreationJobs() {
                         />
 
                         <Button
+                       
                           className={classes.aiButton}
                           variant="light"
                           leftSection={<IconSparkles size={14} />}
@@ -251,6 +256,7 @@ function CreationJobs() {
                         </Button>
 
                         <Button
+                        
                           rightSection={<IconArrowRight size={18} />}
                           fz={16}
                           type="submit"

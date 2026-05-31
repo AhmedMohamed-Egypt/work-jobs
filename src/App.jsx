@@ -4,6 +4,7 @@ import LoginPage from './Pages/LoginPage.jsx'
 import { EmailPasswordProvider } from './context/EmailPasswordContext.jsx'
 import HomePage from './Pages/HomePage.jsx'
 import CreationJobs from './Pages/CreationJobs.jsx'
+import { JobProvider } from "./context/JobContext";
 
 function App() {
 
@@ -11,7 +12,7 @@ function App() {
   return (
 
 
- 
+    <JobProvider>
     <EmailPasswordProvider>
       <BrowserRouter>
       <Routes>
@@ -24,6 +25,7 @@ function App() {
       </BrowserRouter>
 
     </EmailPasswordProvider>
+    </JobProvider>
      
  
   )
