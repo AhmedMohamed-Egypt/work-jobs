@@ -6,14 +6,19 @@ const JobContext = createContext();
 
 export function JobProvider({ children }) {
   const [jobData, setJobData] = useState({
-    Location: "",
-    category: "",
-    deadline: "",
-    description: "",
-    experience: "",
-    salary: "",
-    skills: [],
-    title: "",
+    basicInfo: {
+      Location: "",
+      category: "",
+      deadline: "",
+      description: "",
+      experience: "",
+      salary: "",
+      skills: [],
+      title: "",
+    },
+    requirements: {},
+    benefits: {},
+    screeningQuestions: {},
   });
 
   return (

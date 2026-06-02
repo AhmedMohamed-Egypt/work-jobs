@@ -3,15 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 import { generateJobDescription } from "./createJob.js";
-
-
-
-
-
 const app = express();
-
-
-
 app.use(cors());
 app.use(express.json());
 
@@ -24,7 +16,16 @@ app.get("/test", (req, res) => {
     message: "API working successfully",
   });
 });
-app.post("/createJob", generateJobDescription);
+{
+  /*generateJobDescription*/
+}
+app.post("/createJob",generateJobDescription, (req, res) => {
+  console.log(res);
+  res.status(201).json({
+    success: true,
+    message: "Job received",
+  });
+});
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
