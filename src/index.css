@@ -15,6 +15,7 @@
     --color-grey300:#8F8F8F;
     --color-green:#42A54B;
     --color-grey50:#EEEEEE;
+    --color-violet:#7f67de;
     --bg-grey100:#E7E7E7;
     --color-petreloum:#16628d;
     --font-manpore:'Manrope','sans-serif';
@@ -29,6 +30,9 @@
     --text-xs:15px;
     --text-xs1:16px;
     --text-xl:25px;
+}
+:root {
+  --violet: #7c3aed;
 }
 @keyframes slide-in-left {
   from {

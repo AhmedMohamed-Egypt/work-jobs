@@ -16,16 +16,24 @@ export function JobProvider({ children }) {
       skills: [],
       title: "",
     },
-    requirements: {},
+    requirements: {
+     
+    },
     benefits: {},
     screeningQuestions: {},
-  });
+  }
+  
+);
+const [currentStep,setCurrentStep] = useState(0)
 
   return (
     <JobContext.Provider
       value={{
         jobData,
         setJobData,
+        currentStep,
+        setCurrentStep
+
       }}
     >
       {children}

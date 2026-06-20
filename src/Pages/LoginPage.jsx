@@ -8,8 +8,8 @@ import { UseEmailPassword } from "../context/EmailPasswordContext";
 
 function LoginPage() {
   const navigate = useNavigate()
-  const [val, setVal] = useState("");
-  const [valPass, setValPass] = useState("");
+  const [val, setVal] = useState("ahmed@gmail.com");
+  const [valPass, setValPass] = useState("Ahmed@123456");
   const { getvals } = UseEmailPassword();
   const [error, setError] = useState("");
   const [erorPassword, setErrorrPassword] = useState("");
